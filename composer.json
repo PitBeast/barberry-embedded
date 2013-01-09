@@ -2,9 +2,14 @@
     "name": "barberry/image",
     "version": "0.2",
     "license": "MIT",
+    "repositories": [
+        {
+            "type": "vcs",
+            "url": "https://github.com/PitBeast/Barberry.git"
+        }
+    ],
     "require": {
-        "barberry/barberry": "*",
-        "barberry/plugin-imagemagick": "*"
+        "barberry/barberry": "dev-dev"
     },
     "minimum-stability": "dev",
     "authors": [
