@@ -1,59 +1,51 @@
-barberry-service
+barberry-embedded
 ===============
 
-Images hosting service on base of Barberry library. Serve as origin for a barberry-based service. Fork it if you need any project-specific features or different set of plugins.
+API calls for Barberry library. Fork it if you need any project-specific features or different set of plugins.
 
-Installation
-------------
-
-    composer.phar install
-
-Uploading an image
-------------------
+Add file to storage
+-------------------
 
 *Request*
 
-    POST /
-    Content-Type: multipart/form-data;
-
-    ... image ...
+    $response = Barberry\Api::put($barberryConfig[, $filePath = null])
+    if $filePath omitted $_FILES will be used
 
 *Response*
 
-    HTTP/1.1 201 Created
-    Content-Type: application/json
+    Barberry\Response object
 
-    {"id":"4feSq4","contentType":"image\/jpeg","ext":"jpg","length":323147,"filename":"original.jpg"}
 
-Getting an image
-----------------
+Getting a file
+--------------
 
-To get an original image just request it by ID.
+To get an original file just request it by ID.
 
 *Request*
 
-    GET /4feSq4
+    $response = Barberry\Api::get($barberryConfig, $id[, $filter = null]);
 
 *Response*
 
-    HTTP/1.1 200 OK
-    Content-Type: image/jpeg
+    Barberry\Response object
 
-    ... original image ...
-
-
-To resize and convert image request it by ID and extension.
+To resize and convert image get it by ID with extension.
 
 *Request*
 
-    GET /4feSq4_100x100.gif HTTP/1.1
+    $id .= '100x150.gif';
+    $response = Barberry\Api::get($barberryConfig, $id[, $filter = null])
 
+
+Deleting a file
+---------------
+
+To delete an original file just delete it by ID.
+
+*Request*
+
+    $response = Barberry\Api::delete($barberryConfig, $id);
 
 *Response*
 
-    HTTP/1.1 200 OK
-    Content-Type:image/gif
-
-    ... resized image 100 x 100 ...
-
-
+    Barberry\Response object
