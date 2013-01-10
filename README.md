@@ -29,11 +29,11 @@ To get an original file just request it by ID.
 
     Barberry\Response object
 
-To resize and convert image get it by ID with extension.
+To resize and/or convert image get it by ID with underscored new size and/or dotted extension.
 
 *Request*
 
-    $id .= '100x150.gif';
+    $id .= '_100x150.gif';
     $response = Barberry\Api::get($barberryConfig, $id[, $filter = null])
 
 
