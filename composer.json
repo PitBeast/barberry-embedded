@@ -2,12 +2,6 @@
     "name": "barberry-embedded/image",
     "version": "0.3",
     "license": "MIT",
-    "repositories": [
-        {
-            "type": "vcs",
-            "url": "https://github.com/PitBeast/Barberry.git"
-        }
-    ],
     "autoload": {
         "psr-0": {
             "Barberry": "library/"
@@ -16,7 +10,7 @@
     },
     "require": {
         "php": ">=5.3.3",
-        "barberry/barberry": "dev-dev",
+        "barberry/barberry": "master",
         "barberry/plugin-imagemagick": "*"
     },
     "minimum-stability": "dev",
