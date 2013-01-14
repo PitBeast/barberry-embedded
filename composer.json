@@ -2,15 +2,15 @@
     "name": "barberry-embedded/image",
     "version": "0.3",
     "license": "MIT",
-    "autoload": {
-        "psr-0": {
-            "Barberry": "library/"
-        },
-        "classmap": ["barberry-directions/", "barberry-monitors/"]
-    },
+    "repositories": [
+        {
+            "type": "vcs",
+            "url": "https://github.com/PitBeast/Barberry.git"
+        }
+    ],
     "require": {
         "php": ">=5.3.3",
-        "barberry/barberry": "master",
+        "barberry/barberry": "dev-resources_getter",
         "barberry/plugin-imagemagick": "*"
     },
     "minimum-stability": "dev",
@@ -23,5 +23,11 @@
             "name": "Petr Kudinov",
             "email": "pkudinov@xiag.ch"
         }
-    ]
+    ],
+    "autoload": {
+        "psr-0": {
+            "Barberry": "library/"
+        },
+        "classmap": ["barberry-directions/", "barberry-monitors/"]
+    }
 }

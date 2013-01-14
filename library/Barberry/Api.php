@@ -3,76 +3,39 @@ namespace Barberry;
 
 class Api
 {
-    public static function get(Config $config, $id, Filter\FilterInterface $filter = null)
+    public static function get(Config $config, $id)
     {
-        $requestSource = new RequestSource(array(
-            '_SERVER' => array(
-                'REQUEST_METHOD' => 'GET',
-                'REQUEST_URI' => '/' . $id,
-            )));
-        $application = new Application($config, $filter, $requestSource);
-        return $application->run();
+        try {
+            $application = new Application($config);
+            return $application->getResources()->storage()->getById($id);
+        } catch (Storage\NotFoundException $e) {
+            return null;
+        }
     }
 
-    public static function put(Config $config, $fileDescriptions = null)
+    public static function put(Config $config, $filePath)
     {
-        $overrideProperties = array(
-            '_SERVER' => array(
-                'REQUEST_METHOD' => 'POST',
-                'REQUEST_URI' => '/',
-            ),
-            '_POST' => array(),
-        );
-        if (is_scalar($fileDescriptions)) {
-            if ($fileInfo = self::fileInfo($fileDescriptions)) {
-                $file = array($fileInfo['name'] => $fileInfo);
-            } else {
-                $file = array();
-            }
-            $overrideProperties['_FILES'] = $file;
-        } elseif (is_array($fileDescriptions)) {
-            $files = array_reduce(
-                $fileDescriptions,
-                function ($result, $filePath) {
-                    if (is_scalar($filePath) && $fileInfo = self::fileInfo($filePath)) {
-                        $result[$fileInfo['name']] = $fileInfo;
-                    }
-                    return $result;
-                },
-                array()
-            );
-            $overrideProperties['_FILES'] = $files;
+        if (is_scalar($filePath)
+            && is_file($filePath)
+            && is_readable($filePath)
+            && filesize($filePath)
+        ) {
+            $application = new Application($config);
+            return $application->getResources()->storage()->save(file_get_contents($filePath));
         }
-        $requestSource = new RequestSource($overrideProperties);
-        $application = new Application($config, null, $requestSource);
-        return $application->run();
+        return null;
     }
 
     public static function delete(Config $config, $id)
     {
-        $requestSource = new RequestSource(array(
-            '_SERVER' => array(
-                'REQUEST_METHOD' => 'DELETE',
-                'REQUEST_URI' => '/' . $id,
-            )));
-        $application = new Application($config, null, $requestSource);
-        return $application->run();
-    }
-
-    protected static function fileInfo($filePath) {
-        if (is_scalar($filePath)
-            && is_file($filePath)
-            && is_readable($filePath)
-            && filesize($filePath)) {
-            return array(
-                'size' => filesize($filePath),
-                'tmp_name' => $filePath,
-                'error' => UPLOAD_ERR_OK,
-                'name' => basename($filePath),
-                'trusted' => true,
-            );
+        try {
+            $application = new Application($config);
+            $application->getResources()->storage()->delete($id);
+            $application->getResources()->cache()->invalidate($id);
+            return true;
+        } catch (Storage\NotFoundException $e) {
+            return false;
         }
-        return null;
     }
 
 }

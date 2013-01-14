@@ -23,34 +23,27 @@ class ApiTest extends \PHPUnit_Framework_TestCase
     public function testApiCanPut() {
         $filePath = Test\Data::gif1x1Path();
         $response = Api::put($this->config, $filePath);
-
-        $this->assertInstanceOf('Barberry\\Response', $response);
-        $this->assertEquals(201, $response->code);
+        $this->assertNotNull($response);
     }
 
     public function testApiGetDataEqualPutted()
     {
         $filePath = Test\Data::gif1x1Path();
-        $putted = json_decode(Api::put($this->config, $filePath)->body);
+        $id = Api::put($this->config, $filePath);
+        $this->assertNotNull($id);
 
-        $response = Api::get($this->config, $putted->id);
-        $this->assertEquals(Test\Data::gif1x1(), $response->body);
+        $data = Api::get($this->config, $id);
+        $this->assertEquals(Test\Data::gif1x1(), $data);
     }
 
     public function testApiCanDeleteAfterPut()
     {
         $filePath = Test\Data::gif1x1Path();
-        $putted = json_decode(Api::put($this->config, $filePath)->body);
-        $response = Api::delete($this->config, $putted->id);
-        $this->assertEquals(200, $response->code);
-    }
+        $id = Api::put($this->config, $filePath);
+        $this->assertNotNull($id);
 
-    public function testApiCanGetOtherFormatAndSize() {
-        $filePath = Test\Data::gif1x1Path();
-        $putted = json_decode(Api::put($this->config, $filePath)->body);
-
-        $response = Api::get($this->config, $putted->id . '_15x20.jpg');
-        $this->assertEquals('jpg', $response->contentType->standardExtension());
+        $response = Api::delete($this->config, $id);
+        $this->assertTrue($response);
     }
 
 }
