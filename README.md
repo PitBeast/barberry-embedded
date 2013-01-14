@@ -8,12 +8,11 @@ Add file to storage
 
 *Request*
 
-    $response = Barberry\Api::put($barberryConfig[, $filePath = null])
-    if $filePath omitted $_FILES will be used
+    $response = Barberry\Api::put($barberryConfig, $filePath)
 
 *Response*
 
-    Barberry\Response object
+    Barberry id
 
 
 Getting a file
@@ -23,24 +22,16 @@ To get an original file just request it by ID.
 
 *Request*
 
-    $response = Barberry\Api::get($barberryConfig, $id[, $filter = null]);
+    $response = Barberry\Api::get($barberryConfig, $id);
 
 *Response*
 
-    Barberry\Response object
-
-To resize and/or convert image get it by ID with underscored new size and/or dotted extension.
-
-*Request*
-
-    $id .= '_100x150.gif';
-    $response = Barberry\Api::get($barberryConfig, $id[, $filter = null])
-
+    Binary object or null for non exist objects
 
 Deleting a file
 ---------------
 
-To delete an original file just delete it by ID.
+To delete an original file and clear cache just delete it by ID.
 
 *Request*
 
@@ -48,4 +39,4 @@ To delete an original file just delete it by ID.
 
 *Response*
 
-    Barberry\Response object
+    true or false
