@@ -10,8 +10,7 @@
     ],
     "require": {
         "php": ">=5.3.3",
-        "barberry/barberry": "dev-resources_getter",
-        "barberry/plugin-imagemagick": "*"
+        "barberry/barberry": "dev-resources_getter"
     },
     "minimum-stability": "dev",
     "authors": [

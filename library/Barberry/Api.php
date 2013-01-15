@@ -7,7 +7,7 @@ class Api
     {
         try {
             $application = new Application($config);
-            return $application->getResources()->storage()->getById($id);
+            return $application->resources()->storage()->getById($id);
         } catch (Storage\NotFoundException $e) {
             return null;
         }
@@ -21,7 +21,7 @@ class Api
             && filesize($filePath)
         ) {
             $application = new Application($config);
-            return $application->getResources()->storage()->save(file_get_contents($filePath));
+            return $application->resources()->storage()->save(file_get_contents($filePath));
         }
         return null;
     }
@@ -30,8 +30,8 @@ class Api
     {
         try {
             $application = new Application($config);
-            $application->getResources()->storage()->delete($id);
-            $application->getResources()->cache()->invalidate($id);
+            $application->resources()->storage()->delete($id);
+            $application->resources()->cache()->invalidate($id);
             return true;
         } catch (Storage\NotFoundException $e) {
             return false;
