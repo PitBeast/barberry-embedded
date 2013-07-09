@@ -21,11 +21,8 @@ class Api
             && filesize($filePath)
         ) {
             $application = new Application($config);
-            $fileResource = fopen($filePath, 'r');
-            $id = $application->resources()->storage()->save($fileResource);
-            rewind($fileResource);
-            $application->resources()->cache()->save($fileResource, new Request('/'.$id));
-            fclose($fileResource);
+            $id = $application->resources()->storage()->link($filePath);
+            $application->resources()->cache()->link($filePath, new Request('/'.$id));
             return $id;
         }
         return null;
